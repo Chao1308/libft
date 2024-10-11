@@ -12,76 +12,83 @@
 
 #include "libft.h"
 
-static size_t	count_words(char const *s, char c);
-static char		*substring(char const *str, int start, int finish);
+static size_t	count_words(const char *s, char c);
+static char		*make_word(const char **s, char c);
+static void		free_split(char **split, size_t size);
+static char		**fill_split(char **split, const char *s, char c);
 
 char	**ft_split(char const *s, char c)
 {
-	size_t	i;
-	size_t	j;
-	int		index;
-	char	**result;
+	char	**split;
+	size_t	words;
 
-	result = ft_calloc((count_words(s, c) + 1), sizeof(char *));
-	if (!s || !result)
-		return (0);
-	i = 0;
-	j = 0;
-	index = -1;
-	while (i <= ft_strlen(s))
-	{
-		if (s[i] != c && index < 0)
-			index = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && index >= 0)
-		{
-			result[j] = substring(s, index, i);
-			index = -1;
-			j++;
-		}
-		i++;
-	}
-	result[j] = 0;
-	return (result);
+	if (!s)
+		return (NULL);
+	words = count_words(s, c);
+	split = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!split)
+		return (NULL);
+	return (fill_split(split, s, c));
 }
 
-static size_t	count_words(char const *s, char c)
+static size_t	count_words(const char *s, char c)
 {
-	int	i;
-	int	count;
-	int	x;
+	size_t	count;
 
-	i = 0;
 	count = 0;
-	while (s[i])
+	while (*s)
 	{
-		x = 1;
-		if (s[i] != c && x == 0)
-		{
-			x = 1;
+		while (*s == c)
+			s++;
+		if (*s)
 			count++;
-		}
-		else if (s[i] == c)
-			x = 0;
-		i++;
+		while (*s && *s != c)
+			s++;
 	}
 	return (count);
 }
 
-static char	*substring(char const *str, int start, int finish)
+static char	*make_word(const char **s, char c)
 {
-	char	*copy;
-	int		i;
+	const char	*start;
+	size_t		len;
+
+	start = *s;
+	while (**s && **s != c)
+		(*s)++;
+	len = *s - start;
+	return (ft_substr(start, 0, len));
+}
+
+static void	free_split(char **split, size_t size)
+{
+	while (size--)
+		free(split[size]);
+	free(split);
+}
+
+static char	**fill_split(char **split, const char *s, char c)
+{
+	size_t	i;
+	char	*word;
 
 	i = 0;
-	copy = ft_calloc((finish - start + 1), sizeof(char));
-	if (!word)
-		return (NULL);
-	while (start < finish)
+	while (*s)
 	{
-		copy[i] = str[start];
-		i++;
-		start++;
+		while (*s == c)
+			s++;
+		if (*s)
+		{
+			word = make_word(&s, c);
+			if (!word)
+			{
+				free_split(split, i);
+				return (NULL);
+			}
+			split[i] = word;
+			i++;
+		}
 	}
-	copy[i] = '\0';
-	return (copy);
+	split[i] = NULL;
+	return (split);
 }
