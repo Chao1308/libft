@@ -160,6 +160,7 @@ int main() {
     test_function_application();
     test_fd_functions();
     test_bonus_functions();
-    
+/* gcc -Wall -Wextra -Werror -o test_libft main.c -L. -lft */
+   /* ./test_libft */ 
     return 0;
 }
