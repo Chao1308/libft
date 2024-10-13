@@ -27,10 +27,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	join = (char *)malloc((ls1 + ls2 + 1) * sizeof(char));
 	if (!join)
 		return (NULL);
-	while (s1[i] != '\0')
+	while (s1[i])
 		join[j++] = s1[i++];
 	i = 0;
-	while (s2[i] != '\0')
+	while (s2[i])
 		join[j++] = s2[i++];
 	join[j] = 0;
 	return (join);
