@@ -20,6 +20,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	total_size = nmemb * size;
 	ptr = malloc(total_size);
 	if (ptr)
-		ft_memset(ptr, 0, total_size);
+		ft_bzero(ptr, total_size);
 	return (ptr);
 }
