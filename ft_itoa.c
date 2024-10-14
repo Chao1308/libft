@@ -32,7 +32,7 @@ char	*ft_itoa(int n)
 	i = l - 1;
 	while (nbr != 0)
 	{
-		result[i] = ((nbr % 10) + 48);
+		result[i] = ((nbr % 10) + '0');
 		nbr = nbr / 10;
 		i--;
 	}
