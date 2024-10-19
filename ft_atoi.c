@@ -11,31 +11,29 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <limits.h>
 
 static int	ft_isspace(int c);
 
 int	ft_atoi(const char *nptr)
 {
-	int			i;
-	int			sign;
-	long long	result;
+	int	i;
+	int	sign;
+	int	result;
 
 	i = 0;
 	sign = 1;
 	result = 0;
 	while (ft_isspace(nptr[i]))
 		i++;
-	if ((nptr[i] == '+' || nptr[i] == '-')
-		&& (nptr[i + 1] != '+' || nptr[i + 1] != '-'))
+	if (nptr[i] == '+' || nptr[i] == '-')
+	{
+		if (nptr[i] == '-')
+			sign = -1;
 		i++;
-	if (nptr[i - 1] == '-')
-		sign = -1;
+	}
 	while (nptr[i] && nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		result = 10 * result + (nptr[i] - '0');
-		if (result * sign < INT_MIN)
-			return (0);
 		i++;
 	}
 	result = result * sign;
